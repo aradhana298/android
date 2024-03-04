@@ -1,0 +1,101 @@
+Activity_main.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/colorListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp" />
+
+</LinearLayout>
+
+MainActivity.kt
+package com.example.abc
+
+import android.graphics.Color
+import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var colorListView: ListView
+
+    private val colors = arrayOf("Red", "Green", "Blue", "Yellow", "Cyan", "Magenta")
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        colorListView = findViewById(R.id.colorListView)
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, colors)
+        colorListView.adapter = adapter
+
+        colorListView.onItemClickListener =
+            AdapterView.OnItemClickListener { _, _, position, _ ->
+                changeBackgroundColor(position)
+            }
+    }
+
+    private fun changeBackgroundColor(position: Int) {
+        val color = when (position) {
+            0 -> Color.RED
+            1 -> Color.GREEN
+            2 -> Color.BLUE
+            3 -> Color.YELLOW
+            4 -> Color.CYAN
+            5 -> Color.MAGENTA
+            else -> Color.WHITE
+        }
+        findViewById<View>(android.R.id.content).setBackgroundColor(color)
+    }
+}
+
+AndroidManifest.xml
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.abc">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity"
+            android:exported="true"> <!-- This line specifies that the activity is accessible by other apps -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <!-- Other activities or services -->
+    </application>
+
+</manifest>
+
+
+Styles.xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+</resources>
+
